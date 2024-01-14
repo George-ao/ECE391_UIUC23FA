@@ -1,0 +1,182 @@
+------------------------mp3.1------------------------
+[Bug 1]
+Symptom: the OS crashes when running the launch_tests to test divide_by_0_exception
+Finding: 10 min
+Fixing: 1 line
+Solution: load IDTR to the descriptor idt_desc_ptr
+
+[Bug 2]
+Symptom: the exception message flashes on the screen
+Finding: 30 min
+Fixing: 1 same line in multiple functions
+Solution: adding while(1) after printing the exception message in each of the handlers
+
+[Bug 3]
+Symptom: the interrupts (keyboard and rtc) are not enabled
+Finding: 1 hour
+Fixing: 1 line
+Solution: uncommenting the sti() in kernel.c after initializing and before testing
+
+[Bug 4]
+Symptom: the rtc is not making the screen changes in a fixed pattern at all
+Finding: 1 hour
+Fixing: 15 lines
+Solution: setting and changing the register A, B, C in a correct manner as is stated in the official website
+
+[Bug 5]
+Symptom: Pass other tests but paging is disable. 
+Finding: 2 hours
+Fixing:  1 min
+Solution: add page_init() function to kernel.c
+
+[Bug 6]
+Symptom: Paging is disable. When we enter it(mp4), it just goes back to previous entry.
+Finding: 30 min
+Fixing:  1 h
+Solution: cr4 is not correctly set to enable 4 mb page (enable PSE).
+
+------------------------mp3.2------------------------
+[Bug 1]
+Symptom: terminal driver can't work
+Finding: 30 min
+Fixing:  5 line
+Solution: it seems that screen_x and video memory can't be accessed outside lib, 
+        so it is better to write a helper function in lib to backspace characters
+
+[Bug 2]
+Symptom: the "ctrl+L" is not working
+Finding: 10 min
+Fixing:  1 line
+Solution: get the correct scancode for ctrl and set a flag for ctrl
+
+[Bug 3]
+Symptom: the buffer is stuck when more than 127 characters are input
+Finding: 30 min
+Fixing:  1 line
+Solution: add the checking condition that the 128th key is ENTER
+
+[Bug 4]
+Symptom: the keyboard doesn't work when the terminal driver is close
+Finding: 10 min
+Fixing:  5 line
+Solution: use a read_flag in terminal and keyboard to send a flag notifying that 
+        the terminal is reading
+
+[Bug 5]
+Symptom: when pressing enter at end of line, we jumped two lines
+Finding: 10 min
+Fixing:  5 line
+Solution: set in several places the conditions of such cases to scroll up
+
+[Bug 6]
+Symptom: when we read the exe file, the sreen is empty.
+Finding: 1 min
+Fixing:  2 lines
+Solution: We add the if in our test. When “buf[i]=0”(faulty case), we skip the loop and do not print it on screen. 
+
+[Bug 7]
+Symptom: when we print the directory, the file type and file size are not correct. 
+Finding: 10 min
+Fixing:  10 lines
+Solution: the memcpy does not function as we expected because the two pointer have different types.
+                We use for loop to copy the content by one byte.
+
+------------------------mp3.3------------------------
+[Bug 1]
+Symptom: printing "program terminated abnormally" anyways, and the buffer read is always 3 characters
+Finding: 3 h
+Fixing: 2 lines
+Solution:  deleting two lines of code that was thought to be commented by ";" in idt_linkage.S
+
+[Bug 2]
+Symptom: getting page_fault from halting a program
+Finding: 30 min
+Fixing:  1 line
+Solution: getting the correct address in the pcb
+
+[Bug 3]
+Symptom: the file_descriptor_table's entry is somehow wrong
+Finding: 30 min
+Fixing:  8 lines
+Solution: using the correct index into the array to copy from and copy to the backup array
+
+[Bug 4]
+Symptom: the "391OS> " doesn't appear after executing programs
+Finding: 2 h
+Fixing: 1 line
+Solution: skip the part where we clear buffer after terminal_write
+
+[Bug 5]
+Symptom: the "391OS> " can be "backspaced"
+Finding: 1 h
+Fixing: 1 line
+Solution: add the condition in backspace that if buf_cnt=0, we don't backspace
+
+[Bug 6]
+Symptom: we "can" read from stdout and "write" to stdin
+Finding: 30 min
+Fixing:  10 lines
+Solution: setting bad_call for for opening or closing stdin/stdout, and for reading from stdout and writing to stdin
+
+------------------------mp3.4------------------------
+[Bug 1]
+Symptom: the printing of longer files (longer than 127) is not complete
+Finding: 30 min
+Fixing: 1 line
+Solution:  deleting the BUFFER_SIZE constraints in terminal_write
+
+[Bug 2]
+Symptom: the return value of exception handler is not correct
+Finding: 30 min
+Fixing: 10 line
+Solution:  call halt(255) in exception handlers and add conditions in halt to change the return value (uint8_t status can't hold 256)
+
+[Bug 3]
+Symptom: after fish finished, the vidmap still exists
+Finding: 1 min
+Fixing: 10 line
+Solution: add a vidmem_unmount() inside halt()
+
+------------------------mp3.5------------------------
+[Bug 1]
+Symptom: terminal 2 & 3 doesn't work
+Finding: 30 min
+Fixing: 1 line
+Solution: in terminal_read, index of scheduler should be used to index the corresponding terminal instead of index of the screen displaying
+
+[Bug 2]
+Symptom: fish has wrong rtc frequency
+Finding: 30 min
+Fixing: 30 lines
+Solution: give the three terminals three different rtc frequencies and use them seperately
+
+[Bug 3]
+Symptom: keyboard prints in wrong terminal
+Finding: 1 hour
+Fixing: 10 lines
+Solution: keyboard is interrupted when index of scheduler doesn't equal to index of the screen displaying, so we add a keyboard_flag to 
+          indicate that the character should be printed in the screen displaying
+
+[Bug 4]
+Symptom: the pid and schedule_id and terminal_id have wierd mapping
+Finding: 1 hour
+Fixing: 10 lines
+Solution: open shells in the first three PIT handler, since they are fast enough campared to human.
+
+[Bug 5]
+Symptom: syserr did not pass
+Finding: 30 min
+Fixing: 20 lines
+Solution: use seperate FDs for each program, instead of a global variable shared by all
+
+[Bug 6]
+Symptom: fish has wrong page mapping while running with keyboard handler
+Finding: 1 hour
+Fixing: 10 lines
+Solution: flush TLB when mapping page
+
+[Bug 7]
+Symptom: when running fish in different terminals, there will be a page fault
+Finding: 15 min
+Fixing: 1 line
+Solution: when halting the program, do not unmount the PT's PDE
