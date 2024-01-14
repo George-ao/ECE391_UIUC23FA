@@ -1,4 +1,4 @@
-CS225 @ ZJUI 23SP 
+ECE391 @ UIUC 23FA 
 -----
 Instructor: [Prof. Steven S. Lumetta](https://cs.illinois.edu/about/people/faculty/arindamb), [Prof. Zbigniew T. Kalbarczyk](https://ece.illinois.edu/about/directory/faculty/kalbarcz)
 
