@@ -1,4 +1,4 @@
-CS225 @ ZJUI 23SP 
+ECE391 @ UIUC 23FA 
 -----
 Instructor: [Prof. Steven S. Lumetta](https://cs.illinois.edu/about/people/faculty/arindamb), [Prof. Zbigniew T. Kalbarczyk](https://ece.illinois.edu/about/directory/faculty/kalbarcz)
 MP1 and MP2 are my individual contributions. For MP3, I collaborated with teammates Hengjia Yu, Gaokai Zhang, and Yanxin Lu on a group project to develop an operating system
